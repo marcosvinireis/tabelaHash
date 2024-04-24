@@ -23,7 +23,7 @@ public class TabelaHash<T> {
     }
 
     private int funcaoHash(T chave){
-        return  chave.hashCode();
+        return  chave.hashCode() % this.tamanho;
     }
 
     public void inserir(T item){

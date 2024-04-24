@@ -22,6 +22,12 @@ public class Pessoa {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        long somaHash = 0;
+        for (int i = 0; i < this.id.length(); i++) {
+            char caractere = this.id.charAt(i);
+            int valorAscii = (int) caractere;
+            somaHash += valorAscii*Math.pow(3, this.id.length()-i);
+        }
+        return (int) somaHash;
     }
 }
