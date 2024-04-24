@@ -1,8 +1,11 @@
 package dados;
 
+import listaEncadeada.ListaEncadeada;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Objects;
 
 public class Pessoa {
@@ -19,23 +22,16 @@ public class Pessoa {
         this.id = null;
     }
 
-    public Pessoa[] lerDeArquivo(String nomeArquivo) {
-        Pessoa[] dados = new Pessoa[0]; //usar lista ao ivés de array
+    public static ListaEncadeada<Pessoa> lerDeArquivo(String caminho) {
+        ListaEncadeada<Pessoa> dados = new ListaEncadeada<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(nomeArquivo));
+            BufferedReader br = new BufferedReader(new FileReader(caminho));
             String linha;
-            int qtLinhas = 0; //quantidade de linhas
-            while ((linha = br.readLine()) != null) {
-                qtLinhas++;
-            }
-            dados = new Pessoa[qtLinhas];
-            int i = 0; //contador para o vetor de dados
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(" ");
                 if (partes.length == 2) {
                     Pessoa pessoa = new Pessoa(partes[0], partes[1]);
-                    dados[i] = pessoa;
-                    i++;
+                    dados.adicionar(pessoa);
                 }
             }
             br.close();
@@ -62,5 +58,13 @@ public class Pessoa {
             somaHash += valorAscii*Math.pow(3, this.id.length()-i);
         }
         return (int) somaHash;
+    }
+
+    @Override
+    public String toString() {
+        return "Pessoa{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                '}';
     }
 }
