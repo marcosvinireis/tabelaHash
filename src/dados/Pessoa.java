@@ -3,10 +3,11 @@ package dados;
 import java.util.Objects;
 
 public class Pessoa {
-    private String id;
+    private String id;  // regra de formação: "[A-Z]{3}[0-9]{3}[A-Z]{1}[0-9]{1}"
     private String nome;
 
     public Pessoa(String id, String nome){
+        //assumiremos por enquanto que todos os ids serão válidos
         this.id = id;
         this.nome = nome;
     }
