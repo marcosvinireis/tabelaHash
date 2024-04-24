@@ -42,5 +42,11 @@ public class TabelaHash<T> {
         }
     }
 
+    public void inserirDeArquivo(String path){
+        //esse método não será genérico dado os requisitos da questão 01
+
+
+    }
+
 
 }

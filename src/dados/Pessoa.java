@@ -1,5 +1,8 @@
 package dados;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Objects;
 
 public class Pessoa {
@@ -10,6 +13,36 @@ public class Pessoa {
         //assumiremos por enquanto que todos os ids serão válidos
         this.id = id;
         this.nome = nome;
+    }
+    public Pessoa(){
+        this.nome = null;
+        this.id = null;
+    }
+
+    public Pessoa[] lerDeArquivo(String nomeArquivo) {
+        Pessoa[] dados = new Pessoa[0]; //usar lista ao ivés de array
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(nomeArquivo));
+            String linha;
+            int qtLinhas = 0; //quantidade de linhas
+            while ((linha = br.readLine()) != null) {
+                qtLinhas++;
+            }
+            dados = new Pessoa[qtLinhas];
+            int i = 0; //contador para o vetor de dados
+            while ((linha = br.readLine()) != null) {
+                String[] partes = linha.split(" ");
+                if (partes.length == 2) {
+                    Pessoa pessoa = new Pessoa(partes[0], partes[1]);
+                    dados[i] = pessoa;
+                    i++;
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return dados;
     }
 
     @Override
