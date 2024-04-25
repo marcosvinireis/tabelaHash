@@ -16,6 +16,8 @@ public class Teste {
         TabelaHashPessoa tabela = new TabelaHashPessoa(99);
         tabela.inserirDeArquivo(String.valueOf(caminho));
 
+        Pessoa p = new Pessoa("OAA233I5", "Josélia");
+        tabela.inserir(p);
 
     }
 }

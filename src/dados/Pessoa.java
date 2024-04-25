@@ -22,24 +22,7 @@ public class Pessoa {
         this.id = null;
     }
 
-    public static ListaEncadeada<Pessoa> lerDeArquivo(String caminho) {
-        ListaEncadeada<Pessoa> dados = new ListaEncadeada<>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(caminho));
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] partes = linha.split(" ");
-                if (partes.length == 2) {
-                    Pessoa pessoa = new Pessoa(partes[0], partes[1]);
-                    dados.adicionar(pessoa);
-                }
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return dados;
-    }
+
 
     @Override
     public boolean equals(Object o) {
