@@ -16,6 +16,8 @@ public class TabelaHash<T> {
     private ListaEncadeada<T>[] tabela;
     private int tamanho;
 
+    private final String ELEMENTO_NAO_EXISTE = "Esse elemento não existe";
+
     public TabelaHash(int tamanho){
 
         this.tabela = new ListaEncadeada[tamanho];
@@ -26,11 +28,12 @@ public class TabelaHash<T> {
     private int funcaoHash(T chave){
         return  chave.hashCode() % this.tamanho;
     }
+    private boolean posicaoVazia(int pos){return this.tabela[pos] == null;}
 
     public void inserir(T item){
         int pos = funcaoHash(item);
 
-        if (this.tabela[pos] == null){
+        if (posicaoVazia(pos)){
             ListaEncadeada<T> bucket = new ListaEncadeada<>();
             bucket.adicionar(item);
             this.tabela[pos] = bucket;
@@ -43,7 +46,19 @@ public class TabelaHash<T> {
         }
     }
 
+    public void apagar(T item){
+        int pos = this.funcaoHash(item);
 
+        if (posicaoVazia(pos)) {
+            System.out.println(ELEMENTO_NAO_EXISTE);
+            return;
+        }else {
+            if (this.tabela[pos].contains(item)){
+                int posLista = this.tabela[pos].buscaPorElemento(item);
+                this.tabela[pos].remover(posLista);
+            }else System.out.println(ELEMENTO_NAO_EXISTE);
+        }
+    }
 
 
 }
