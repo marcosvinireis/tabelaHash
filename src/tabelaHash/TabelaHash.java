@@ -1,64 +1,85 @@
 package tabelaHash;
 
-import dados.Pessoa;
 import listaEncadeada.ListaEncadeada;
 
-/*
-* inserir de arquivo
-* inserir
-* remover
-* buscar
-* imprimir
-* */
+public class TabelaHash<K, V> {
 
-public class TabelaHash<T> {
-
-    private ListaEncadeada<T>[] tabela;
+    private ListaEncadeada<Entrada<K, V>> [] tabela;
     private int tamanho;
+    private int capacidade;
 
     private final String ELEMENTO_NAO_EXISTE = "Esse elemento não existe";
 
-    public TabelaHash(int tamanho){
+    public TabelaHash(int capacidade){
 
-        this.tabela = new ListaEncadeada[tamanho];
-        this.tamanho = tamanho;
-        for (int i = 0; i < tamanho; i++) tabela[i]  = null;
+        this.tabela = new ListaEncadeada[capacidade];
+        this.capacidade = capacidade;
+        this.tamanho = 0;
+        for (int i = 0; i < capacidade; i++) tabela[i]  = null;
     }
 
-    private int funcaoHash(T chave){
-        return  chave.hashCode() % this.tamanho;
+    private int funcaoHash(K chave){
+        return  chave.hashCode() % this.capacidade;
     }
-    private boolean posicaoVazia(int pos){return this.tabela[pos] == null;}
+    private boolean posicaoVazia(int pos){
+        return this.tabela[pos] == null;
+    }
 
-    public void inserir(T item){
-        int pos = funcaoHash(item);
+    public void inserir(K chave, V valor){
+        int pos = funcaoHash(chave);
+        Entrada<K, V> dado = new Entrada<>(chave, valor);
 
         if (posicaoVazia(pos)){
-            ListaEncadeada<T> bucket = new ListaEncadeada<>();
-            bucket.adicionar(item);
+            ListaEncadeada<Entrada<K, V>> bucket = new ListaEncadeada<>();
+            bucket.adicionar(dado);
             this.tabela[pos] = bucket;
         } else {
-            if (this.tabela[pos].contains(item)){
+            if (this.tabela[pos].contains(dado)){
                 System.out.println("Item já cadastrado");
                 return;
             }
-            this.tabela[pos].adicionar(item);
+            this.tabela[pos].adicionar(dado);
         }
     }
 
-    public void apagar(T item){
-        int pos = this.funcaoHash(item);
+    public void remover(K chave){
+        int pos = this.funcaoHash(chave);
 
         if (posicaoVazia(pos)) {
             System.out.println(ELEMENTO_NAO_EXISTE);
             return;
         }else {
-            if (this.tabela[pos].contains(item)){
-                int posLista = this.tabela[pos].buscaPorElemento(item);
-                this.tabela[pos].remover(posLista);
-            }else System.out.println(ELEMENTO_NAO_EXISTE);
+            int x = this.tabela[pos].getTamanho(); // tamanho da lista na posição
+            for (int i = 0; i < x; i++) {
+                if(this.tabela[pos].busca(i).getChave() == chave){
+                    this.tabela[pos].remover(i);
+                    return;
+                }
+            }
         }
+        System.out.println(ELEMENTO_NAO_EXISTE);
     }
 
-
+    private Entrada<K, V> buscarElemento(K chave){
+        int pos = funcaoHash(chave);
+        if (posicaoVazia(pos)) {
+            System.out.println(ELEMENTO_NAO_EXISTE);
+            return null;
+        }else {
+            int x = this.tabela[pos].getTamanho(); // tamanho da lista na posição
+            for (int i = 0; i < x; i++) {
+                if(this.tabela[pos].busca(i).getChave() == chave){
+                    return this.tabela[pos].busca(i);
+                }
+            }
+        }
+        return null;
+    }
+    public V buscar(K chave){
+        if (buscarElemento(chave) == null) {
+            System.out.println(ELEMENTO_NAO_EXISTE);
+            return null;
+        }else
+            return buscarElemento(chave).getValor();
+    }
 }
